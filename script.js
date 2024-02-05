@@ -86,25 +86,6 @@ function calculateTotalRegisteredMoney() {
     document.getElementById('totalRegisteredMoney').textContent = totalRegisteredMoney.toFixed(2);
 }
 
-function manageHistory() {
-    const raffleTickets = JSON.parse(localStorage.getItem('raffleTickets')) || [];
-    if (raffleTickets.length === 0) {
-        alert('Histórico vazio.');
-        return;
-    }
-
-    const action = prompt('Digite "remover" para limpar o histórico ou "cancelar" para sair:');
-    if (action !== null) {
-        if (action.toLowerCase() === 'remover') {
-            localStorage.removeItem('raffleTickets');
-            loadRaffleTickets();
-            calculateTotalRegisteredMoney();
-        } else {
-            alert('Ação inválida.');
-        }
-    }
-}
-
 function exportRaffleTickets() {
     const raffleTickets = JSON.parse(localStorage.getItem('raffleTickets')) || [];
     const jsonContent = JSON.stringify(raffleTickets, null, 2);
@@ -142,5 +123,24 @@ function importRaffleTickets() {
         };
 
         reader.readAsText(file);
+    }
+}
+
+function manageHistory() {
+    const raffleTickets = JSON.parse(localStorage.getItem('raffleTickets')) || [];
+    if (raffleTickets.length === 0) {
+        alert('Histórico vazio.');
+        return;
+    }
+
+    const action = prompt('Digite "remover" para limpar o histórico ou "cancelar" para sair:');
+    if (action !== null) {
+        if (action.toLowerCase() === 'remover') {
+            localStorage.removeItem('raffleTickets');
+            loadRaffleTickets();
+            calculateTotalRegisteredMoney();
+        } else {
+            alert('Ação inválida.');
+        }
     }
 }
