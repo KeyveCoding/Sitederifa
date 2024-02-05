@@ -104,3 +104,43 @@ function manageHistory() {
         }
     }
 }
+
+function exportRaffleTickets() {
+    const raffleTickets = JSON.parse(localStorage.getItem('raffleTickets')) || [];
+    const jsonContent = JSON.stringify(raffleTickets, null, 2);
+
+    const blob = new Blob([jsonContent], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'raffle_tickets.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+function importRaffleTickets() {
+    const input = document.getElementById('importFile');
+    const file = input.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function (event) {
+            const content = event.target.result;
+            const importedTickets = JSON.parse(content);
+
+            if (Array.isArray(importedTickets)) {
+                localStorage.setItem('raffleTickets', JSON.stringify(importedTickets));
+                loadRaffleTickets();
+                calculateTotalRegisteredMoney();
+                alert('List imported successfully!');
+            } else {
+                alert('Invalid file format.');
+            }
+        };
+
+        reader.readAsText(file);
+    }
+}
